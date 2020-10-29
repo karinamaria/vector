@@ -1,6 +1,6 @@
 /*!
  * @file test_manager.cpp
- * @brief Implementation of the TestManager class.
+ * @brief Implementação da classe TestManager.
  * @date October 28th, 2020
  * @author Karina Maria
  * @author Maria Eduarda

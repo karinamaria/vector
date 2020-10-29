@@ -3,7 +3,7 @@
 
 /*!
  * @file test_manager.h
- * @brief Definition of the TestManager class.
+ * @brief Definição da classe TestManager.
  * @date October 28th, 2020
  * @author Karina Maria
  * @author Maria Eduarda

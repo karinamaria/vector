@@ -3,7 +3,7 @@
 
 /*!
  * @file vector.h
- * @brief Definition of the vector class.
+ * @brief Definição da classe vector.
  * @date October 28th, 2020
  * @author Karina Maria
  * @author Maria Eduarda
