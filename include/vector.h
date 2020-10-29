@@ -98,7 +98,7 @@ namespace sc {
             /// Retorna a capacidade de armazenamento do vetor.
             size_type capacity( void ) const { return m_capacity; };
 
-            /// Verifica se o vetor não possui elementos.
+            /// Retorna `true` se o vetor não contém elementos e `false`, caso contrário
             bool empty( void ) const { return (m_size == 0); };
 
             
@@ -106,14 +106,34 @@ namespace sc {
             //== Modificadores.
             //----------------------------------------------------------------------
 
-            /// Apaga todos os elementos do vetor.
-            /*void clear()
-            {
-            	for ( int i{0}; i < m_size; ++i )
-            		~m_storage[i]();
-
+            /// Remove (logicamente) todos elementos do vetor
+            void clear(){
             	m_size = 0;
-            }*/
+            }
+
+            /// Adicionar o `value` ao início(index 0) do vetor.
+            void push_front(const T& value){
+            	
+ 				if(m_size+1 > m_capacity){
+ 					m_capacity = m_capacity * 2;
+ 				}
+
+ 				// Cria novo vetor preenchendo a partir da primeira(index 1) posição
+ 				T* new_array = new T[m_capacity];
+ 				for(int i=0; i<m_size; i++){
+ 					new_array[i+1] = m_storage[i];//copiando para vetor maior
+ 				}
+
+ 				delete[] m_storage;
+ 				m_storage = new_array;//atribuindo vetor maior ao vetor da classe
+
+ 				m_storage[0] = value;
+ 				m_size++;
+            }
+
+            void push_back(const T& value){
+
+            }
     };
 }
 
