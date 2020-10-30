@@ -4,7 +4,7 @@
 /*!
  * @file vector.h
  * @brief Definição da classe vector.
- * @date October 28th, 2020
+ * @date 28 de Outubro de 2020
  * @author Karina Maria
  * @author Maria Eduarda
  */
@@ -20,6 +20,9 @@ namespace sc {
             // Apelidos para os tipos
     		using size_type = unsigned long; //!< O tipo do tamanho.
     		using value_type = T; //!< O tipo de dado dos elementos do vetor.
+            using pointer = value_type*; //!< Ponteiro para o valor armazenado no container
+            using reference = value_type&; //!< Referência para o valor armazenado no container
+            using const_reference = const value_type&; //! Referência const para o valor armazenado no container
 
     	public:
     		// Iteradores
@@ -28,7 +31,7 @@ namespace sc {
             size_type m_size; //!< Quantidade de elementos no vetor.
             size_type m_capacity; //!< Capacidade de armazenamento do vetor.
 
-            T *m_storage; //!< Área de armazenamento de dados para o vetor.
+            value_type *m_storage; //!< Área de armazenamento de dados para o vetor.
 
     	public:
             //======================================================================
@@ -39,7 +42,7 @@ namespace sc {
             vector()
             {
             	m_capacity = 0;
-            	m_storage = new T[m_capacity];
+            	m_storage = new value_type[m_capacity];
             	m_size = 0;
             }
 
@@ -47,7 +50,7 @@ namespace sc {
             explicit vector( size_type count )
             {
             	m_capacity = count;
-            	m_storage = new T[m_capacity];
+            	m_storage = new value_type[m_capacity];
             	m_size = 0;
             }
 
@@ -56,7 +59,7 @@ namespace sc {
             vector ( InputIt first, InputIt last )
             {
             	m_capacity = last-first;
-                m_storage = new T[m_capacity];
+                m_storage = new value_type[m_capacity];
 
             	for ( m_size = 0; m_size < m_capacity; ++m_size )
             		m_storage[m_size] = *first++;
@@ -69,10 +72,10 @@ namespace sc {
             }
 
             /// Construtor que recebe uma lista inicializadora.
-            vector( const std::initializer_list<T> &ilist )
+            vector( const std::initializer_list<value_type> &ilist )
             {
             	m_capacity = ilist.size();
-                m_storage = new T[m_capacity];
+                m_storage = new value_type[m_capacity];
 
             	auto ilptr = ilist.begin();
 
@@ -112,7 +115,7 @@ namespace sc {
             }
 
             /// Adiciona o `value` ao início(index 0) do vetor.
-            void push_front(const T& value){
+            void push_front(const_reference value){
             	m_size++;
 
  				if(m_size > m_capacity){
@@ -129,7 +132,7 @@ namespace sc {
             }
 
             /// Adiciona o `value` ao início(index 0) do vetor.
-            void push_back(const T& value){
+            void push_back(const_reference value){
             	m_size++;
 
  				if(m_size > m_capacity){
@@ -148,13 +151,13 @@ namespace sc {
             void pop_front(){
             	m_size --;
 
-            	for(size_t i=0; i<m_size; i++){
+            	for(size_type i=0; i<m_size; i++){
             		m_storage[i] = m_storage[i+1];
             	}
             }
 
             /// Substitui o `value` a quantidade de vezes definida pelo `count`
-            void assign(size_type count, const T& value){
+            void assign(size_type count, const_reference value){
             	if(count > m_capacity){
  					reserve(count * 2);
  				}
@@ -167,7 +170,7 @@ namespace sc {
             /// Aumenta a capacidade do vetor
             void reserve(size_type new_cap){
             	if(new_cap > m_capacity){
-            		// Cria novo vetor preenchendo a partir da primeira(index 1) posição
+            		
  					T* new_array = new T[new_cap];
 
  					for(size_type i=0; i<m_size; i++){
@@ -185,12 +188,12 @@ namespace sc {
             //----------------------------------------------------------------------
 
             /// Retorna um objeto para o fim do vetor
-            const T & back() const{
+            const_reference back() const{
             	return m_storage[m_size];
             }
 
             /// Retorna um objeto para o início do vetor
-            const T & front() const{
+            const_reference front() const{
             	return m_storage[0];
             }
 
@@ -200,7 +203,7 @@ namespace sc {
              * @return O valor na posição `pos`.
              * @throws std::out_of_range,  se `pos > size()`.
              */
-            T & at (size_type pos){
+            reference at (size_type pos){
             	if(pos > m_size){
             		throw std::out_of_range("Tentativa de leitura fora do vetor...");
             	}

@@ -1,7 +1,7 @@
 /*!
  * @file run_tests.cpp
  * @brief Programa para executar testes.
- * @date October 28th, 2020
+ * @date 28 de Outubro de 2020
  * @author Karina Maria
  * @author Maria Eduarda
  */
