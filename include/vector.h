@@ -111,29 +111,103 @@ namespace sc {
             	m_size = 0;
             }
 
-            /// Adicionar o `value` ao início(index 0) do vetor.
+            /// Adiciona o `value` ao início(index 0) do vetor.
             void push_front(const T& value){
-            	
- 				if(m_size+1 > m_capacity){
- 					m_capacity = m_capacity * 2;
+            	m_size++;
+
+ 				if(m_size > m_capacity){
+ 					reserve((m_capacity == 0) ? 2 : m_capacity * 2);
  				}
-
- 				// Cria novo vetor preenchendo a partir da primeira(index 1) posição
- 				T* new_array = new T[m_capacity];
- 				for(int i=0; i<m_size; i++){
- 					new_array[i+1] = m_storage[i];//copiando para vetor maior
+ 				
+ 				//Trocando ordem dos elementos para deixar a posição do index zero vazia
+ 				for(size_type i=m_size-1; i>0; i--){
+ 					m_storage[i] = m_storage[i-1];
  				}
-
- 				delete[] m_storage;
- 				m_storage = new_array;//atribuindo vetor maior ao vetor da classe
-
+ 	
  				m_storage[0] = value;
- 				m_size++;
+ 	
             }
 
+            /// Adiciona o `value` ao início(index 0) do vetor.
             void push_back(const T& value){
+            	m_size++;
 
+ 				if(m_size > m_capacity){
+ 					reserve((m_capacity == 0) ? 2 : m_capacity * 2);
+ 				}
+
+ 				m_storage[m_size-1] = value;
             }
+
+            /// Remove o elemento do fim do vetor
+            void pop_back(){
+            	m_size --;
+            }
+
+            /// Remove o elemento da posição inicial(index 0) do vetor
+            void pop_front(){
+            	m_size --;
+
+            	for(size_t i=0; i<m_size; i++){
+            		m_storage[i] = m_storage[i+1];
+            	}
+            }
+
+            /// Substitui o `value` a quantidade de vezes definida pelo `count`
+            void assign(size_type count, const T& value){
+            	if(count > m_capacity){
+ 					reserve(count * 2);
+ 				}
+ 				m_size = count;
+ 				for(size_type i=0; i<m_size; i++){
+ 					m_storage[i] = value;
+ 				}
+            }
+
+            /// Aumenta a capacidade do vetor
+            void reserve(size_type new_cap){
+            	if(new_cap > m_capacity){
+            		// Cria novo vetor preenchendo a partir da primeira(index 1) posição
+ 					T* new_array = new T[new_cap];
+
+ 					for(size_type i=0; i<m_size; i++){
+ 						new_array[i]=m_storage[i];
+ 					}
+
+ 					delete[] m_storage;
+ 					m_storage = new_array;
+ 					m_capacity = new_cap;
+            	} 
+            }
+
+            //======================================================================
+            //== Elementos de acesso
+            //----------------------------------------------------------------------
+
+            /// Retorna um objeto para o fim do vetor
+            const T & back() const{
+            	return m_storage[m_size];
+            }
+
+            /// Retorna um objeto para o início do vetor
+            const T & front() const{
+            	return m_storage[0];
+            }
+
+            /// Retorna o elemento na posição `pos`.
+            /*!
+             * @param pos Índice do elemento no vetor.
+             * @return O valor na posição `pos`.
+             * @throws std::out_of_range,  se `pos > size()`.
+             */
+            T & at (size_type pos){
+            	if(pos > m_size){
+            		throw std::out_of_range("Tentativa de leitura fora do vetor...");
+            	}
+
+            	return m_storage[pos];
+            }
+
     };
 }
 
