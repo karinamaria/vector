@@ -202,6 +202,12 @@ namespace sc {
             	return m_storage[0];
             }
 
+            /// Retorna um objeto para para a posição `pos` do vetor
+            const_reference operator[]( size_type pos) const{
+                return m_storage[pos];
+            }
+
+
             /// Retorna o elemento na posição `pos`.
             reference operator[]( size_type pos){
                 return m_storage[pos];
@@ -221,9 +227,9 @@ namespace sc {
             	return m_storage[pos];
             }
 
-            
-            
-            bool operator== (const vector& lhs, const vector& rhs){
+            /// Verifica se dois vetores são iguais
+            //bool operator== (const vector& rhs)
+            friend bool operator== (const vector& lhs, const vector& rhs){
                 if(lhs.size() == rhs.size()){
                     for(size_type i=0; i<lhs.size(); i++){
                         if(lhs[i] != rhs[i]){
@@ -233,6 +239,19 @@ namespace sc {
                     return true;
                 }
                 return false;
+            }
+
+            /// Verifica se dois vetores são diferentes
+            friend bool operator!=(const vector& lhs, const vector& rhs){
+                if(lhs.size() != rhs.size()){
+                    for(size_type i=0; i<lhs.size(); i++){
+                        if(lhs[i] == rhs[i]){
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                return true;
             }
 
     };
