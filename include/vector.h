@@ -169,16 +169,23 @@ namespace sc {
 
             /// Aumenta a capacidade do vetor
             void reserve(size_type new_cap){
-            	pointer new_array = new value_type[new_cap];
+            	if(new_cap > m_capacity){
+                    pointer new_array = new value_type[new_cap];
 
- 				for(size_type i=0; i<m_size; i++){
- 					new_array[i]=m_storage[i];
- 				}
+     				for(size_type i=0; i<m_size; i++){
+     					new_array[i]=m_storage[i];
+     				}
 
- 				delete[] m_storage;
- 				m_storage = new_array;
- 				m_capacity = new_cap;
-        
+     				delete[] m_storage;
+     				m_storage = new_array;
+     				m_capacity = new_cap;
+                }
+            
+            }
+
+            /// Reduz o a capacidade `m_capacity` para quantidade de elementos`m_size`
+            void shrink_to_fit(void){
+                m_capacity = m_size;
             }
 
             //======================================================================
