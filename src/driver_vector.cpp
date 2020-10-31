@@ -18,9 +18,10 @@ int main(){
 	a.assign(8,2);
 
 	vector<int> b;
-	b.assign(1,2);
+	b.assign(7,2);
 
 	std::cout << "Os vetores são iguais: " << (a==b) << "."<< std::endl;
+	std::cout << "Os vetores são diferentes: " << (a!=b) << "."<< std::endl;
 
 	std::cout <<"Quantidade: " <<  a.size() << std::endl;
 	std::cout << "Elementos" << std::endl;

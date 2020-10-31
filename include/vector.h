@@ -229,10 +229,10 @@ namespace sc {
 
             /// Verifica se dois vetores são iguais
             //bool operator== (const vector& rhs)
-            friend bool operator== (const vector& lhs, const vector& rhs){
-                if(lhs.size() == rhs.size()){
-                    for(size_type i=0; i<lhs.size(); i++){
-                        if(lhs[i] != rhs[i]){
+            bool operator== (const vector& rhs){
+                if(m_size == rhs.size()){
+                    for(size_type i=0; i<m_size; i++){
+                        if(m_storage[i] != rhs[i]){
                             return false;
                         }
                     }
@@ -242,14 +242,14 @@ namespace sc {
             }
 
             /// Verifica se dois vetores são diferentes
-            friend bool operator!=(const vector& lhs, const vector& rhs){
-                if(lhs.size() != rhs.size()){
-                    for(size_type i=0; i<lhs.size(); i++){
-                        if(lhs[i] == rhs[i]){
-                            return false;
+            bool operator!=(const vector& rhs){
+                if(m_size == rhs.size()){
+                    for(size_type i=0; i<m_size; i++){
+                        if(m_storage[i] != rhs[i]){
+                            return true;
                         }
                     }
-                    return true;
+                    return false;
                 }
                 return true;
             }
