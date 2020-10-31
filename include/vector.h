@@ -31,7 +31,7 @@ namespace sc {
             size_type m_size; //!< Quantidade de elementos no vetor.
             size_type m_capacity; //!< Capacidade de armazenamento do vetor.
 
-            value_type *m_storage; //!< Área de armazenamento de dados para o vetor.
+            pointer m_storage; //!< Área de armazenamento de dados para o vetor.
 
     	public:
             //======================================================================
@@ -169,18 +169,16 @@ namespace sc {
 
             /// Aumenta a capacidade do vetor
             void reserve(size_type new_cap){
-            	if(new_cap > m_capacity){
-            		
- 					T* new_array = new T[new_cap];
+            	pointer new_array = new value_type[new_cap];
 
- 					for(size_type i=0; i<m_size; i++){
- 						new_array[i]=m_storage[i];
- 					}
+ 				for(size_type i=0; i<m_size; i++){
+ 					new_array[i]=m_storage[i];
+ 				}
 
- 					delete[] m_storage;
- 					m_storage = new_array;
- 					m_capacity = new_cap;
-            	} 
+ 				delete[] m_storage;
+ 				m_storage = new_array;
+ 				m_capacity = new_cap;
+        
             }
 
             //======================================================================
