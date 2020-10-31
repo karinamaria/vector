@@ -1,6 +1,8 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
+#include "MyIterator.h"
+
 /*!
  * @file vector.h
  * @brief Definição da classe vector.
@@ -22,10 +24,27 @@ namespace sc {
     		using value_type = T; //!< O tipo de dado dos elementos do vetor.
             using pointer = value_type*; //!< Ponteiro para o valor armazenado no container
             using reference = value_type&; //!< Referência para o valor armazenado no container
-            using const_reference = const value_type&; //! Referência const para o valor armazenado no container
+            using const_reference = const value_type&; //!< Referência const para o valor armazenado no container
+            using iterator = MyIterator<value_type>; //!< Iterator para o tipo de dado dos elementos do vetor.
+            using const_iterator = MyIterator<const value_type>; //!< Iterator constante para o tipo de dado dos elementos do vetor.
 
     	public:
-    		// Iteradores
+    		//======================================================================
+            //== Métodos Iteradores
+            //----------------------------------------------------------------------
+
+            /// Iterador para o ínicio do vetor.
+            iterator begin(void) { return iterator( &m_storage[0] ); }
+
+            /// Iterador para o final lógico do vetor.
+            iterator end(void) { return iterator( &m_storage[m_size] ); }
+
+            /// Iterador constante para o ínicio do vetor.
+            const_iterator cbegin(void) const { return const_iterator( &m_storage[0] ); }
+
+            /// Iterador constante para o final lógico do vetor.
+            const_iterator cend(void) const { return const_iterator( &m_storage[m_size] ); }
+            
     	private:
             //== Membro da classe
             size_type m_size; //!< Quantidade de elementos no vetor.
@@ -68,7 +87,10 @@ namespace sc {
             /// Construtor de cópia.
             vector( const vector &other )
             {
-            	
+            	m_capacity = other.size();
+                m_storage = new value_type[m_capacity];
+                std::copy( other.cbegin(), other.cend(), begin() );
+                m_size = m_capacity;
             }
 
             /// Construtor que recebe uma lista inicializadora.
