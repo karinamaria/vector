@@ -203,6 +203,11 @@ namespace sc {
             }
 
             /// Retorna o elemento na posição `pos`.
+            reference operator[]( size_type pos){
+                return m_storage[pos];
+            }
+
+            /// Retorna o elemento na posição `pos`.
             /*!
              * @param pos Índice do elemento no vetor.
              * @return O valor na posição `pos`.
@@ -214,6 +219,20 @@ namespace sc {
             	}
 
             	return m_storage[pos];
+            }
+
+            
+            
+            bool operator== (const vector& lhs, const vector& rhs){
+                if(lhs.size() == rhs.size()){
+                    for(size_type i=0; i<lhs.size(); i++){
+                        if(lhs[i] != rhs[i]){
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
             }
 
     };

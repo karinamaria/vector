@@ -15,12 +15,12 @@ using namespace sc;
 int main(){
 	vector<int> a;
 
-	a.push_back(3);
-	a.push_front(10);
-	a.push_front(40);
-	a.push_back(50);
-
 	a.assign(8,2);
+
+	vector<int> b;
+	b.assign(9,2);
+
+	std::cout << "Os vetores são iguais: " << (a==b) << "."<< std::endl;
 
 	std::cout <<"Quantidade: " <<  a.size() << std::endl;
 	std::cout << "Elementos" << std::endl;
