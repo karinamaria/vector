@@ -108,7 +108,7 @@ namespace sc {
             /// Destrutor.
             ~vector()
             {
-            	//clear();
+            	clear();
             	delete[] m_storage;
             	m_capacity = 0;
             }
