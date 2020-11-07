@@ -23,12 +23,15 @@ set_property(TARGET driver_search PROPERTY CXX_STANDARD 11)
 
 ### [2] Test target
 # set the include path
-include_directories( lib )
+# Locate GTest
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
 
 # Add the test target
 add_executable( run_tests
-                lib/test_manager.cpp
-                test/run_tests.cpp )
+                test/tests.cpp )
+target_link_libraries(run_tests ${GTEST_LIBRARIES} pthread)
 
 # define C++11 standard
 set_property(TARGET run_tests PROPERTY CXX_STANDARD 11)
