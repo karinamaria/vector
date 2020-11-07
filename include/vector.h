@@ -204,12 +204,18 @@ namespace sc {
 
             /// Retorna um objeto para para a posição `pos` do vetor
             const_reference operator[]( size_type pos) const{
+                if(pos >= m_size){
+                    throw std::out_of_range("Tentativa de leitura fora do vetor...");
+                }
                 return m_storage[pos];
             }
 
 
             /// Retorna o elemento na posição `pos`.
             reference operator[]( size_type pos){
+                if(pos >= m_size){
+                    throw std::out_of_range("Tentativa de leitura fora do vetor...");
+                }
                 return m_storage[pos];
             }
 
@@ -220,7 +226,7 @@ namespace sc {
              * @throws std::out_of_range,  se `pos > size()`.
              */
             reference at (size_type pos){
-            	if(pos > m_size){
+            	if(pos >= m_size){
             		throw std::out_of_range("Tentativa de leitura fora do vetor...");
             	}
 
