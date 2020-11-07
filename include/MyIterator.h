@@ -23,94 +23,96 @@ class MyIterator {
 		typedef std::bidirectional_iterator_tag iterator_category; //!< Categoria do iterador.
 
 		//======================================================================
-                //== Métodos Especiais.
-                //----------------------------------------------------------------------
+        //== Métodos Especiais.
+        //----------------------------------------------------------------------
 
-                /// Construtor padrão.
+        /// Construtor padrão.
 		MyIterator( value_type *other = nullptr ) : m_ptr{other} { /**/ }
-                /// Construtor que recebe um endereço.
+        /// Construtor que recebe um endereço.
 		MyIterator( const MyIterator& ) = default;
 
 		//======================================================================
-                //== Sobrecarga de operadores.
-                //----------------------------------------------------------------------
+        //== Sobrecarga de operadores.
+        //----------------------------------------------------------------------
 
-                /// Atribui um iterador a outro.
-                MyIterator& operator=( const MyIterator& ) = default;
+        /// Atribui um iterador a outro.
+        MyIterator& operator=( const MyIterator& ) = default;
 
-                /// Retorna uma referência ao objeto localizado na posição apontada pelo iterador.
+        /// Retorna uma referência ao objeto localizado na posição apontada pelo iterador.
 		reference operator*() const { return *m_ptr; }
                 /// Retorna ponteiro encapsulado na classe.
 		pointer operator->( void ) const { assert( m_ptr != nullptr); return m_ptr; }
 
-                /// Avança o iterador em uma posição (pré-incremento).
+        /// Avança o iterador em uma posição (pré-incremento).
 		MyIterator& operator++() { m_ptr++; return *this; }
-                /// Avança o iterador em uma posição (pós-incremento).
+        /// Avança o iterador em uma posição (pós-incremento).
 		MyIterator operator++( int ) { MyIterator other{*this}; m_ptr++; return other; }
-                /// Decresce o iterador em uma posição (pré-decremento).
+        /// Decresce o iterador em uma posição (pré-decremento).
 		MyIterator& operator--() { m_ptr--; return *this; }
-                /// Decresce o iterador em uma posição (pós-decremento).
+        /// Decresce o iterador em uma posição (pós-decremento).
 		MyIterator operator--( int ) { MyIterator other{*this}; m_ptr--; return other; }
 
-                /// Verifica se dois iteradores são iguais.
+        /// Verifica se dois iteradores são iguais.
 		bool operator==( const MyIterator &other ) const { return m_ptr==other.m_ptr; }
-                /// Verifica se dois iteradores são diferentes.
+        /// Verifica se dois iteradores são diferentes.
 		bool operator!=( const MyIterator &other ) const { return not(m_ptr==other.m_ptr); }
 
 		//======================================================================
-                //== Funções friend.
-                //----------------------------------------------------------------------
+        //== Funções friend.
+        //----------------------------------------------------------------------
 
-                /// Retorna a diferença entre dois iteradores.
-                friend long operator-( MyIterator value1, MyIterator value2 )
-                {
-                        long count{0};
-                        while (true) {
-                                if( (value1+count) == value2 ) { return -count; }
-                                if( (value1-count) == value2 ) { return count; }
-                                ++count;
-                        }
-                }
+        /// Retorna a diferença entre dois iteradores.
+        friend long operator-( MyIterator value1, MyIterator value2 )
+        {
+            long count{0};
+            while (true) {
+                if( (value1+count) == value2 ) { return -count; } //se value1 <= value2
+                if( (value1-count) == value2 ) { return count; } //se value1 >= value2
+                ++count;
+            }
+        }
 
-                /// Retorna um iterador apontando para o enésimo sucessor no vetor apartir de `other`.
-                friend MyIterator operator+( difference_type diff, MyIterator other )
-                { 
-                	while (diff > 0) {
-                		++other;
-                		--diff;
-                	}
-        		return other;
+        /// Retorna um iterador apontando para o enésimo sucessor no vetor apartir de `other`.
+        friend MyIterator operator+( difference_type diff, MyIterator other )
+        { 
+        	while (diff > 0) { //caso diff seja positivo
+        		++other;
+        		--diff;
+        	}
+        	while (diff < 0) { //caso diff seja negativo
+        		--other;
+        		++diff;
+        	}
+			return other;
 		}
 
-                /// Retorna um iterador apontando para o enésimo sucessor no vetor apartir de `other`.
-                friend MyIterator operator+( MyIterator other, difference_type diff )
-                {
-                	while (diff > 0) {
-                		++other;
-                		--diff;
-                	}
-        		return other;
-                }
+        /// Retorna um iterador apontando para o enésimo sucessor no vetor apartir de `other`.
+        friend MyIterator operator+( MyIterator other, difference_type diff )
+        {
+        	while (diff > 0) { //caso diff seja positivo
+        		++other;
+        		--diff;
+        	}
+        	while (diff < 0) { //caso diff seja negativo
+        		--other;
+        		++diff;
+        	}
+			return other;
+        }
 
-                /// Retorna um iterador apontando para o enésimo antecessor no vetor apartir de `other`.
-                friend MyIterator operator-( difference_type diff, MyIterator other )
-                {
-                	while (diff > 0) {
-                		--other;
-                		--diff;
-                	}
-        		return other;
-                }
-
-                /// Retorna um iterador apontando para o enésimo antecessor no vetor apartir de `other`.
-                friend MyIterator operator-( MyIterator other, difference_type diff )
-                {
-			while (diff > 0) {
-                		--other;
-                		--diff;
-                	}
-        		return other;
-                }
+        /// Retorna um iterador apontando para o enésimo antecessor no vetor apartir de `other`.
+        friend MyIterator operator-( MyIterator other, difference_type diff )
+        {
+			while (diff > 0) { //caso diff seja positivo
+        		--other;
+        		--diff;
+        	}
+        	while (diff < 0) { //caso diff seja negativo
+        		++other;
+        		++diff;
+        	}
+			return other;
+        }
 
 	private:
 		//== Membro da classe
