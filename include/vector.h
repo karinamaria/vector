@@ -11,25 +11,25 @@
  * @author Maria Eduarda
  */
 namespace sc {
-	 /*!
+     /*!
      * Essa classe representa um vetor dinâmico genérico do C++, que é um tipo
      * de **container sequencial**.
      * @tparam T Tipo de dado que será amazenado no array.
      */
     template < typename T >
     class vector {
-    	public:
+        public:
             // Apelidos para os tipos
-    		using size_type = unsigned long; //!< O tipo do tamanho.
-    		using value_type = T; //!< O tipo de dado dos elementos do vetor.
+            using size_type = unsigned long; //!< O tipo do tamanho.
+            using value_type = T; //!< O tipo de dado dos elementos do vetor.
             using pointer = value_type*; //!< Ponteiro para o valor armazenado no container
             using reference = value_type&; //!< Referência para o valor armazenado no container
             using const_reference = const value_type&; //!< Referência const para o valor armazenado no container
             using iterator = MyIterator<value_type>; //!< Iterator para o tipo de dado dos elementos do vetor.
             using const_iterator = MyIterator<const value_type>; //!< Iterator constante para o tipo de dado dos elementos do vetor.
 
-    	public:
-    		//======================================================================
+        public:
+            //======================================================================
             //== Métodos Iteradores
             //----------------------------------------------------------------------
 
@@ -45,14 +45,14 @@ namespace sc {
             /// Iterador constante para o final lógico do vetor.
             const_iterator cend(void) const { return const_iterator( &m_storage[m_size] ); }
             
-    	private:
+        private:
             //== Membro da classe
             size_type m_size; //!< Quantidade de elementos no vetor.
             size_type m_capacity; //!< Capacidade de armazenamento do vetor.
 
             pointer m_storage; //!< Área de armazenamento de dados para o vetor.
 
-    	public:
+        public:
             //======================================================================
             //== Métodos Especiais
             //----------------------------------------------------------------------
@@ -60,34 +60,34 @@ namespace sc {
             /// Construtor padrão, cria um vetor vazio.
             vector()
             {
-            	m_capacity = 0;
-            	m_storage = new value_type[m_capacity];
-            	m_size = 0;
+                m_capacity = 0;
+                m_storage = new value_type[m_capacity];
+                m_size = 0;
             }
 
             /// Construtor que recebe um tamanho para o vetor.
             explicit vector( size_type count )
             {
-            	m_capacity = count;
-            	m_storage = new value_type[m_capacity];
-            	m_size = 0;
+                m_capacity = count;
+                m_storage = new value_type[m_capacity];
+                m_size = 0;
             }
 
             /// Construtor que recebe um range.
             template < typename InputIt >
             vector ( InputIt first, InputIt last )
             {
-            	m_capacity = last-first;
+                m_capacity = last-first;
                 m_storage = new value_type[m_capacity];
 
-            	for ( m_size = 0; m_size < m_capacity; ++m_size )
-            		m_storage[m_size] = *first++;
+                for ( m_size = 0; m_size < m_capacity; ++m_size )
+                    m_storage[m_size] = *first++;
             }
 
             /// Construtor de cópia.
             vector( const vector &other )
             {
-            	m_capacity = other.size();
+                m_capacity = other.size();
                 m_storage = new value_type[m_capacity];
                 std::copy( other.cbegin(), other.cend(), begin() );
                 m_size = m_capacity;
@@ -96,21 +96,21 @@ namespace sc {
             /// Construtor que recebe uma lista inicializadora.
             vector( const std::initializer_list<value_type> &ilist )
             {
-            	m_capacity = ilist.size();
+                m_capacity = ilist.size();
                 m_storage = new value_type[m_capacity];
 
-            	auto ilptr = ilist.begin();
+                auto ilptr = ilist.begin();
 
-            	for ( m_size = 0; m_size < m_capacity; ++m_size )
-            		m_storage[m_size] = *ilptr++;
+                for ( m_size = 0; m_size < m_capacity; ++m_size )
+                    m_storage[m_size] = *ilptr++;
             }
 
             /// Destrutor.
             ~vector()
             {
-            	clear();
-            	delete[] m_storage;
-            	m_capacity = 0;
+                clear();
+                delete[] m_storage;
+                m_capacity = 0;
             }
 
             //======================================================================
@@ -133,74 +133,66 @@ namespace sc {
 
             /// Remove (logicamente) todos elementos do vetor
             void clear(){
-            	m_size = 0;
+                m_size = 0;
             }
 
             /// Adiciona o `value` ao início(index 0) do vetor.
             void push_front(const_reference value){
-            	m_size++;
-
- 				if(m_size > m_capacity){
- 					reserve((m_capacity == 0) ? 2 : m_capacity * 2);
- 				}
- 				
- 				//Trocando ordem dos elementos para deixar a posição do index zero vazia
- 				for(size_type i=m_size-1; i>0; i--){
- 					m_storage[i] = m_storage[i-1];
- 				}
- 	
- 				m_storage[0] = value;
- 	
+                reserve(++m_size);
+                
+                //Trocando ordem dos elementos para deixar a posição do index zero vazia
+                for(size_type i=m_size-1; i>0; i--){
+                    m_storage[i] = m_storage[i-1];
+                }
+    
+                m_storage[0] = value;
+    
             }
 
             /// Adiciona o `value` ao início(index 0) do vetor.
             void push_back(const_reference value){
-            	m_size++;
+                reserve(++m_size);
 
- 				if(m_size > m_capacity){
- 					reserve((m_capacity == 0) ? 2 : m_capacity * 2);
- 				}
-
- 				m_storage[m_size-1] = value;
+                m_storage[m_size-1] = value;
             }
 
             /// Remove o elemento do fim do vetor
             void pop_back(){
-            	m_size --;
+                m_size --;
             }
 
             /// Remove o elemento da posição inicial(index 0) do vetor
             void pop_front(){
-            	m_size --;
+                m_size --;
 
-            	for(size_type i=0; i<m_size; i++){
-            		m_storage[i] = m_storage[i+1];
-            	}
+                for(size_type i=0; i<m_size; i++){
+                    m_storage[i] = m_storage[i+1];
+                }
             }
 
             /// Substitui o `value` a quantidade de vezes definida pelo `count`
             void assign(size_type count, const_reference value){
-            	if(count > m_capacity){
- 					reserve(count * 2);
- 				}
- 				m_size = count;
- 				for(size_type i=0; i<m_size; i++){
- 					m_storage[i] = value;
- 				}
+                reserve(count);
+
+                m_size = count;
+                
+                for(size_type i=0; i<m_size; i++){
+                    m_storage[i] = value;
+                }
             }
 
             /// Aumenta a capacidade do vetor
             void reserve(size_type new_cap){
-            	if(new_cap > m_capacity){
-                    pointer new_array = new value_type[new_cap];
+                if(new_cap > capacity()){
+                    pointer new_array = new value_type[new_cap*2];
 
-     				for(size_type i=0; i<m_size; i++){
-     					new_array[i]=m_storage[i];
-     				}
+                    for(size_type i=0; i<m_size; i++){
+                        new_array[i]=m_storage[i];
+                    }
 
-     				delete[] m_storage;
-     				m_storage = new_array;
-     				m_capacity = new_cap;
+                    delete[] m_storage;
+                    m_storage = new_array;
+                    m_capacity = new_cap*2;
                 }
             
             }
@@ -216,7 +208,7 @@ namespace sc {
 
             /// Retorna um objeto para o fim do vetor
             const_reference back() const{
-            	return *(--cend());
+                return *(--cend());
             }
 
              /// Retorna o elemento na posição `pos`.
@@ -226,7 +218,7 @@ namespace sc {
 
             /// Retorna um objeto para o início do vetor
             const_reference front() const{
-            	return *cbegin();
+                return *cbegin();
             }
 
             /// Retorna o elemento na posição `pos`.
@@ -251,6 +243,20 @@ namespace sc {
                 return m_storage[pos];
             }
 
+            /// Retorna um objeto para posição `pos`.
+            /*!
+             * @param pos Índice do elemento no vetor.
+             * @return O valor na posição `pos`.
+             * @throws std::out_of_range,  se `pos > size()`.
+             */
+            const_reference at(size_type pos) const{
+                if(pos >= m_size){
+                    throw std::out_of_range("Tentativa de leitura fora do vetor...");
+                }
+
+                return m_storage[pos];
+            }
+
             /// Retorna o elemento na posição `pos`.
             /*!
              * @param pos Índice do elemento no vetor.
@@ -258,11 +264,11 @@ namespace sc {
              * @throws std::out_of_range,  se `pos > size()`.
              */
             reference at (size_type pos){
-            	if(pos >= m_size){
-            		throw std::out_of_range("Tentativa de leitura fora do vetor...");
-            	}
+                if(pos >= m_size){
+                    throw std::out_of_range("Tentativa de leitura fora do vetor...");
+                }
 
-            	return m_storage[pos];
+                return m_storage[pos];
             }
 
             /// Verifica se dois vetores são iguais
@@ -290,6 +296,16 @@ namespace sc {
                     return false;
                 }
                 return true;
+            }
+
+            /// Retorna um ponteiro para o primeiro elemento do vetor
+            pointer data(void){
+                return begin();
+            }
+
+            /// Retorna um objeto para o primeiro elemento do vetor
+            const_reference data(void) const{
+                return begin();
             }
 
     };
