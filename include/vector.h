@@ -216,12 +216,22 @@ namespace sc {
 
             /// Retorna um objeto para o fim do vetor
             const_reference back() const{
-            	return m_storage[m_size];
+            	return *(--cend());
+            }
+
+             /// Retorna o elemento na posição `pos`.
+            reference back(void){
+                return *(--end());
             }
 
             /// Retorna um objeto para o início do vetor
             const_reference front() const{
-            	return m_storage[0];
+            	return *cbegin();
+            }
+
+            /// Retorna o elemento na posição `pos`.
+            reference front(void){
+                return *begin();
             }
 
             /// Retorna um objeto para para a posição `pos` do vetor

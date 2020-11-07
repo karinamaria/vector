@@ -13,7 +13,7 @@
 using namespace sc;
 
 int main(){
-	vector<int> a;
+	vector<int> a{1,2,4};
 	try{
        std::cout << a[0] << std::endl;
     } 
@@ -25,7 +25,7 @@ int main(){
 	vector<int> b;
 	b.assign(7,2);
 
-	std::cout << "Os vetores são iguais: " << (a==b) << "."<< std::endl;
+	std::cout << "Os vetores são iguais: " << a==b << "."<< std::endl;
 	std::cout << "Os vetores são diferentes: " << (a!=b) << "."<< std::endl;
 
 	std::cout <<"Tamanho vetor a: " <<  a.size() << std::endl;
