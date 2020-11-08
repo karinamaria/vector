@@ -118,13 +118,13 @@ namespace sc {
             //----------------------------------------------------------------------
 
             /// Retorna quantidade de elementos no vetor.
-            size_type size( void ) const { return m_size; };
+            size_type size( void ) const { return m_size; }
 
             /// Retorna a capacidade de armazenamento do vetor.
-            size_type capacity( void ) const { return m_capacity; };
+            size_type capacity( void ) const { return m_capacity; }
 
             /// Retorna `true` se o vetor não contém elementos e `false`, caso contrário
-            bool empty( void ) const { return (m_size == 0); };
+            bool empty( void ) const { return (m_size == 0); }
 
             
             //======================================================================
@@ -132,114 +132,148 @@ namespace sc {
             //----------------------------------------------------------------------
 
             /// Remove (logicamente) todos elementos do vetor
-            void clear(){
-                m_size = 0;
-            }
+            void clear(){ m_size = 0;}
 
             /// Adiciona o `value` ao início(index 0) do vetor.
-            void push_front(const_reference value){
+            void push_front( const_reference value )
+            {
                 reserve(++m_size);
                 
                 //Trocando ordem dos elementos para deixar a posição do index zero vazia
-                for(size_type i=m_size-1; i>0; i--){
+                for(size_type i=m_size-1; i>0; i--)
                     m_storage[i] = m_storage[i-1];
-                }
     
                 m_storage[0] = value;
     
             }
 
             /// Adiciona o `value` ao início(index 0) do vetor.
-            void push_back(const_reference value){
+            void push_back( const_reference value ){
                 reserve(++m_size);
 
                 m_storage[m_size-1] = value;
             }
 
             /// Remove o elemento do fim do vetor
-            void pop_back(){
-                m_size --;
-            }
+            void pop_back(){ m_size --; }
 
             /// Remove o elemento da posição inicial(index 0) do vetor
-            void pop_front(){
+            void pop_front()
+            {
                 m_size --;
 
-                for(size_type i=0; i<m_size; i++){
+                for(size_type i=0; i<m_size; i++)
                     m_storage[i] = m_storage[i+1];
-                }
             }
 
-            /// Substitui o `value` a quantidade de vezes definida pelo `count`
-            void assign(size_type count, const_reference value){
-                reserve(count);
-
-                m_size = count;
+            /// Adiciona `value` ao vetor antes da posição fornecida pelo iterador `pos`
+            iterator insert( iterator pos, const_reference value )
+            {
+                reserve(++m_size);
+                if(pos == cbegin())
+                    throw std::out_of_range("Tentativa de escrita fora do vetor...");
                 
-                for(size_type i=0; i<m_size; i++){
-                    m_storage[i] = value;
-                }
+                for(size_type i=m_size; i>(pos-1); i--)
+                    m_storage[i] = m_storage[i-1];
+                
+                m_storage[pos--] = value;   
+            }
+
+            template < typename InItr >
+            iterator insert( iterator pos, InItr first, InItr last )
+            {
+
+            }
+
+            iterator insert( const_iterator pos, const std::initializer_list<value_type>& ilist )
+            {
+
             }
 
             /// Aumenta a capacidade do vetor
-            void reserve(size_type new_cap){
-                if(new_cap > capacity()){
+            void reserve( size_type new_cap )
+            {
+                if(new_cap > capacity())
+                {
                     pointer new_array = new value_type[new_cap*2];
 
-                    for(size_type i=0; i<m_size; i++){
+                    for(size_type i=0; i<m_size; i++)
                         new_array[i]=m_storage[i];
-                    }
+                    
 
                     delete[] m_storage;
                     m_storage = new_array;
                     m_capacity = new_cap*2;
                 }
-            
             }
 
             /// Reduz o a capacidade `m_capacity` para quantidade de elementos`m_size`
-            void shrink_to_fit(void){
-                m_capacity = m_size;
+            void shrink_to_fit( void ){ m_capacity = m_size;}
+
+            /// Substitui o `value` a quantidade de vezes definida pelo `count`
+            void assign( size_type count, const_reference value )
+            {
+                reserve(count);
+
+                m_size = count;
+                
+                for(size_type i=0; i<m_size; i++)
+                    m_storage[i] = value;
             }
+
+            void assign( const std::initializer_list<value_type>& ilist )
+            {
+
+            }
+
+            template < typename InputItr >
+            void assign( InputItr first, InputItr last ){
+
+            }
+
+
+            iterator erase( iterator pos)
+            {
+
+            }
+
+            iterator erase( iterator first, iterator last )
+            {
+
+            }
+
 
             //======================================================================
             //== Elementos de acesso
             //----------------------------------------------------------------------
 
             /// Retorna um objeto para o fim do vetor
-            const_reference back() const{
-                return *(--cend());
-            }
+            const_reference back() const { return *(--cend()); }
 
              /// Retorna o elemento na posição `pos`.
-            reference back(void){
-                return *(--end());
-            }
+            reference back( void ) { return *(--end()); }
 
             /// Retorna um objeto para o início do vetor
-            const_reference front() const{
-                return *cbegin();
-            }
+            const_reference front() const { return *cbegin(); }
 
             /// Retorna o elemento na posição `pos`.
-            reference front(void){
-                return *begin();
-            }
+            reference front( void ){ return *begin(); }
 
             /// Retorna um objeto para para a posição `pos` do vetor
-            const_reference operator[]( size_type pos) const{
-                if(pos >= m_size){
+            const_reference operator[]( size_type pos) const
+            {
+                if(pos >= m_size)
                     throw std::out_of_range("Tentativa de leitura fora do vetor...");
-                }
+                
                 return m_storage[pos];
             }
 
-
             /// Retorna o elemento na posição `pos`.
-            reference operator[]( size_type pos){
-                if(pos >= m_size){
+            reference operator[]( size_type pos )
+            {
+                if(pos >= m_size)
                     throw std::out_of_range("Tentativa de leitura fora do vetor...");
-                }
+                
                 return m_storage[pos];
             }
 
@@ -249,10 +283,10 @@ namespace sc {
              * @return O valor na posição `pos`.
              * @throws std::out_of_range,  se `pos > size()`.
              */
-            const_reference at(size_type pos) const{
-                if(pos >= m_size){
+            const_reference at( size_type pos ) const
+            {
+                if(pos >= m_size)
                     throw std::out_of_range("Tentativa de leitura fora do vetor...");
-                }
 
                 return m_storage[pos];
             }
@@ -263,22 +297,22 @@ namespace sc {
              * @return O valor na posição `pos`.
              * @throws std::out_of_range,  se `pos > size()`.
              */
-            reference at (size_type pos){
-                if(pos >= m_size){
+            reference at( size_type pos )
+            {
+                if(pos >= m_size)
                     throw std::out_of_range("Tentativa de leitura fora do vetor...");
-                }
 
                 return m_storage[pos];
             }
 
             /// Verifica se dois vetores são iguais
             //bool operator== (const vector& rhs)
-            bool operator== (const vector& rhs){
+            bool operator== ( const vector& rhs )
+            {
                 if(m_size == rhs.size()){
                     for(size_type i=0; i<m_size; i++){
-                        if(m_storage[i] != rhs[i]){
+                        if(m_storage[i] != rhs[i])
                             return false;
-                        }
                     }
                     return true;
                 }
@@ -286,12 +320,12 @@ namespace sc {
             }
 
             /// Verifica se dois vetores são diferentes
-            bool operator!=(const vector& rhs){
+            bool operator!=( const vector& rhs )
+            {
                 if(m_size == rhs.size()){
                     for(size_type i=0; i<m_size; i++){
-                        if(m_storage[i] != rhs[i]){
+                        if(m_storage[i] != rhs[i])
                             return true;
-                        }
                     }
                     return false;
                 }
@@ -299,15 +333,10 @@ namespace sc {
             }
 
             /// Retorna um ponteiro para o primeiro elemento do vetor
-            pointer data(void){
-                return begin();
-            }
+            pointer data( void ){ return begin(); }
 
             /// Retorna um objeto para o primeiro elemento do vetor
-            const_reference data(void) const{
-                return begin();
-            }
-
+            const_reference data( void ) const { return begin();}
     };
 }
 
