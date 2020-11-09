@@ -44,18 +44,21 @@ int main(){
 	}
 	std::cout << std::endl;**/
 
-	vector<int> vec { 0, 1, 2, 4, 5, 6 };
+	sc::vector<int> vec1 { 1, 2, 3, 4, 5 };
+    sc::vector<int> vec2 { 1, 2, 3, 4, 5 };
+    sc::vector<int> source { 6, 7, 8, 9, 10 };
 
-	for(size_t i=0; i<vec.size(); i++){
-		std::cout << vec.at(i) << " ";
+    vec1.insert( vec1.begin(), source.begin(), source.end() );
+    vec1 = vec2;
+    vec1.insert( std::next( vec1.begin(), 2 ), source.begin(), source.end() );
+    vec1 = vec2;
+    vec1.insert( vec1.end(), source.begin(), source.end() );
+    vec1 = vec2;
+     vec1.insert( std::next( vec1.end(), 2 ) , source.begin(), source.end() );
+    std::cout << "[ ";
+    for(size_t i=0; i<vec1.size(); i++){
+		std::cout << vec1.at(i) << " ";
 	}
-	std::cout << "------------" << std::endl;
-
-    // Insert at front
-    vec.insert( vec.end(), 3 );
-
-    for(size_t i=0; i<vec.size(); i++){
-		std::cout << vec.at(i) << " ";
-	}
+	std::cout << " ]"<< std::endl;
 	return 0;
 }

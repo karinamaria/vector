@@ -458,7 +458,7 @@ TEST(IntVector, InsertSingleValueAtPosition)
     ASSERT_EQ( vec , ( sc::vector<int>{ 0, 1, 2, 3, 4, 5, 6, 7 } ) );
 }
 
-TEST(IntVector, DISABLED_InsertRange)
+TEST(IntVector, InsertRange)
 {
     // Aux arrays.
     sc::vector<int> vec1 { 1, 2, 3, 4, 5 };

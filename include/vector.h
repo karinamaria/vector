@@ -189,8 +189,12 @@ namespace sc {
             /// Adiciona `value` ao vetor antes da posição fornecida pelo iterador `pos`
             iterator insert( iterator pos, const_reference value )
             {
-                auto index = (pos-begin());
-                
+                auto index = size_type(pos-begin());
+
+                if(index > size()){
+                    throw std::out_of_range("Tentativa de escrita fora do vetor...");
+                }
+
                 reserve(size()+1);
 
                 iterator last = end();
@@ -208,8 +212,20 @@ namespace sc {
             }
 
             template < typename InItr >
+            /// Insere elementos do intervalo `[first; last)` antes da `pos`.
             iterator insert( iterator pos, InItr first, InItr last )
             {
+                auto index = size_type(pos-begin());
+
+                if(index > size()){
+                    return pos;
+                }
+         
+                while(last != first ){
+                    pos = insert(pos, *(last-1));
+                    --last;
+                }
+
                 return pos;
             }
 
