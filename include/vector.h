@@ -233,27 +233,57 @@ namespace sc {
                     m_storage[i] = value;
             }
 
-            void assign( const std::initializer_list<value_type>& ilist )
-            {
-
+            /// Remove do vetor o elemento em `pos`.
+            iterator erase( iterator pos ) {
+                iterator p{pos};
+                while(pos != end()-1) {
+                    *pos = *(pos+1);
+                    ++pos;
+                }
+    
+                --m_size;
+                return p;
             }
 
-            template < typename InputItr >
-            void assign( InputItr first, InputItr last ){
+            /// Remove do vetor os elementos no intervalo [first, last).
+            iterator erase( iterator first, iterator last ) {
+                iterator p{first};
+                size_type diff = last-first;
 
+                while(last != end()) {
+                    *first = *(first+diff);
+                    ++last;
+                    ++first;
+                }
+                m_size -= diff;
+
+                return p;
             }
 
-
-            iterator erase( iterator pos)
-            {
-
+            /// Substitui o conteúdo do vetor por cópias dos elementos no intervalo [first, last).
+            template < typename InItr >
+            void assign( InItr first, InItr last ) {
+                auto size = last-first;
+                
+                if(size > m_capacity)
+                    reserve(size);
+                
+                m_size = size;
+                for(size_type i=0; i<m_size; i++)
+                    m_storage[i] = *first++;
             }
 
-            iterator erase( iterator first, iterator last )
-            {
+            /// Substitui o conteúdo do vetor pelos elementos da lista inicializadora `ilist`.
+            void assign( const std::initializer_list<value_type>& ilist ) {
+                if(ilist.size() > m_capacity)
+                    reserve(ilist.size());
 
+                m_size = ilist.size();
+                auto ilptr = ilist.begin();
+                
+                for(size_type i=0; i<m_size; i++)
+                    m_storage[i] = *ilptr++;
             }
-
 
             //======================================================================
             //== Elementos de acesso
