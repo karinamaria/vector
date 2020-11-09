@@ -486,7 +486,7 @@ TEST(IntVector, DISABLED_InsertRange)
 
 }
 
-// TEST(IntVector, DISABLED_InsertInitializarList)
+// TEST(IntVector, InsertInitializarList)
 // {
 //     // Aux arrays.
 //     sc::vector<int> vec1 { 1, 2, 3, 4, 5 };
@@ -513,7 +513,7 @@ TEST(IntVector, DISABLED_InsertRange)
 //     ASSERT_EQ( vec1 , ( sc::vector<int>{ 1, 2, 3, 4, 5 } ) );
 // }
 
-TEST(IntVector, DISABLED_AssignCountValue2)
+TEST(IntVector, AssignCountValue2)
 {
     // Initial vector.
     sc::vector<char> vec { 'a', 'b', 'c', 'd', 'e' };
@@ -541,7 +541,7 @@ TEST(IntVector, DISABLED_AssignCountValue2)
     ASSERT_EQ( vec.capacity() , 8 );
 }
 
-TEST(IntVector, DISABLED_EraseRange)
+TEST(IntVector, EraseRange)
 {
     // Initial vector.
     sc::vector<int> vec { 1, 2, 3, 4, 5 };
@@ -573,7 +573,7 @@ TEST(IntVector, DISABLED_EraseRange)
     ASSERT_TRUE( vec.empty() );
 }
 
-TEST(IntVector, DISABLED_ErasePos)
+TEST(IntVector, ErasePos)
 {
     // Initial vector.
     sc::vector<int> vec { 1, 2, 3, 4, 5 };
