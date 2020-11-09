@@ -70,9 +70,8 @@ namespace sc {
             {
                 m_capacity = last-first;
                 m_storage = new value_type[m_capacity];
-
-                for ( m_size = 0; m_size < m_capacity; ++m_size )
-                    m_storage[m_size] = *first++;
+                std::copy( first, last, begin() );
+                m_size = m_capacity;
             }
 
             /// Construtor de cópia.
@@ -89,11 +88,20 @@ namespace sc {
             {
                 m_capacity = ilist.size();
                 m_storage = new value_type[m_capacity];
+                std::copy( ilist.begin(), ilist.end(), begin() );
+                m_size = m_capacity;
+            }
 
-                auto ilptr = ilist.begin();
+            /// Construtor de movimentação, move os elementos de `other` para o vetor em construção.
+            vector( vector &&other )
+            {
+                m_capacity = other.size();
+                m_storage = new value_type[m_capacity];
+                std::copy( other.cbegin(), other.cend(), begin() );
+                m_size = m_capacity;
 
-                for ( m_size = 0; m_size < m_capacity; ++m_size )
-                    m_storage[m_size] = *ilptr++;
+                other.clear();
+                other.shrink_to_fit();
             }
 
             /// Destrutor.
@@ -104,15 +112,31 @@ namespace sc {
                 m_capacity = 0;
             }
 
-            /// Atribui os elementos de um vetor a outro.
+            /// Atribui cópia dos elementos de um vetor a outro.
             vector& operator=( const vector& other )
             {
                 clear();
                 if (other.size() > m_capacity)
                     reserve(other.size());
 
-                for ( m_size = 0; m_size < other.size(); ++m_size )
-                    m_storage[m_size] = other[m_size];
+                std::copy( other.cbegin(), other.cend(), begin() );
+                m_size = other.size();
+
+                return *this;
+            }
+
+            /// Movimenta os elementos de um vetor para outro.
+            vector& operator=( vector&& other )
+            {
+                clear();
+                if (other.size() > m_capacity)
+                    reserve(other.size());
+
+                std::copy( other.cbegin(), other.cend(), begin() );
+                m_size = other.size();
+
+                other.clear();
+                other.shrink_to_fit();
 
                 return *this;
             }
@@ -124,9 +148,8 @@ namespace sc {
                 if (ilist.size() > m_capacity)
                     reserve(ilist.size());
 
-                auto ilptr = ilist.begin();
-                for ( m_size = 0; m_size < ilist.size(); ++m_size )
-                    m_storage[m_size] = *ilptr++;
+                std::copy( ilist.begin(), ilist.end(), begin() );
+                m_size = ilist.size();
 
                 return *this;
             }
@@ -260,8 +283,7 @@ namespace sc {
                     reserve(size);
                 
                 m_size = size;
-                for(size_type i=0; i<m_size; i++)
-                    m_storage[i] = *first++;
+                std::copy( first, last, begin() );
             }
 
             /// Substitui o conteúdo do vetor pelos elementos da lista inicializadora `ilist`.
@@ -270,10 +292,7 @@ namespace sc {
                     reserve(ilist.size());
 
                 m_size = ilist.size();
-                auto ilptr = ilist.begin();
-                
-                for(size_type i=0; i<m_size; i++)
-                    m_storage[i] = *ilptr++;
+                std::copy( ilist.begin(), ilist.end(), begin() );
             }
 
             //======================================================================

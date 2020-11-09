@@ -62,9 +62,9 @@ class MyIterator {
         //----------------------------------------------------------------------
 
         /// Retorna a diferença entre dois iteradores.
-        friend long operator-( MyIterator value1, MyIterator value2 )
+        friend unsigned long operator-( MyIterator value1, MyIterator value2 )
         {
-            long count{0};
+            unsigned long count{0};
             while (true) {
                 if( (value1+count) == value2 ) { return -count; } //se value1 <= value2
                 if( (value1-count) == value2 ) { return count; } //se value1 >= value2
