@@ -189,15 +189,7 @@ namespace sc {
             /// Adiciona `value` ao vetor antes da posição fornecida pelo iterador `pos`
             iterator insert( iterator pos, const_reference value )
             {
-                reserve(++m_size);
-                if(pos == cbegin())
-                    throw std::out_of_range("Tentativa de escrita fora do vetor...");
-
                 
-                for(size_type i=m_size; i>(pos-1); i--)
-                    m_storage[i] = m_storage[i-1];
-                
-                m_storage[pos--] = value;   
             }
 
             template < typename InItr >
@@ -327,11 +319,11 @@ namespace sc {
 
             /// Verifica se dois vetores são iguais
             //bool operator== (const vector& rhs)
-            bool operator== ( const vector& rhs )
+            friend bool operator== ( const vector& lhs, const vector& rhs )
             {
-                if(m_size == rhs.size()){
-                    for(size_type i=0; i<m_size; i++){
-                        if(m_storage[i] != rhs[i])
+                if(lhs.size() == rhs.size()){
+                    for(size_type i=0; i<lhs.size(); i++){
+                        if(lhs[i] != rhs[i])
                             return false;
                     }
                     return true;
@@ -340,11 +332,11 @@ namespace sc {
             }
 
             /// Verifica se dois vetores são diferentes
-            bool operator!=( const vector& rhs )
+            friend bool operator!=( const vector& lhs, const vector& rhs )
             {
-                if(m_size == rhs.size()){
-                    for(size_type i=0; i<m_size; i++){
-                        if(m_storage[i] != rhs[i])
+                if(lhs.size() == rhs.size()){
+                    for(size_type i=0; i<lhs.size(); i++){
+                        if(lhs[i] != rhs[i])
                             return true;
                     }
                     return false;
