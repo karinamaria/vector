@@ -189,18 +189,33 @@ namespace sc {
             /// Adiciona `value` ao vetor antes da posição fornecida pelo iterador `pos`
             iterator insert( iterator pos, const_reference value )
             {
+                auto index = (pos-begin());
                 
+                reserve(size()+1);
+
+                iterator last = end();
+                iterator p = begin()+index;
+                
+                while(last != p) {
+                   *last  = *(last - 1);
+                   --last;
+                }
+    
+                ++m_size;
+                *p=value;
+                
+                return p;
             }
 
             template < typename InItr >
             iterator insert( iterator pos, InItr first, InItr last )
             {
-
+                return pos;
             }
 
             iterator insert( const_iterator pos, const std::initializer_list<value_type>& ilist )
             {
-
+                return pos;
             }
 
             /// Aumenta a capacidade do vetor
