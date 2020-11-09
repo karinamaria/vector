@@ -56,19 +56,10 @@ namespace sc {
             //======================================================================
             //== Métodos Especiais
             //----------------------------------------------------------------------
-            
-            /// Construtor padrão, cria um vetor vazio.
-            vector()
-            {
-                m_capacity = 0;
-                m_storage = new value_type[m_capacity];
-                m_size = 0;
-            }
 
-            /// Construtor que recebe um tamanho para o vetor.
-            explicit vector( size_type count )
+            /// Construtor padrão, cria um vetor com tamanho determinado pelo valor de `count`.
+            explicit vector( size_type count = 0 ) : m_capacity{count}
             {
-                m_capacity = count;
                 m_storage = new value_type[m_capacity];
                 m_size = 0;
             }
@@ -113,6 +104,33 @@ namespace sc {
                 m_capacity = 0;
             }
 
+            /// Atribui os elementos de um vetor a outro.
+            vector& operator=( const vector& other )
+            {
+                clear();
+                if (other.size() > m_capacity)
+                    reserve(other.size());
+
+                for ( m_size = 0; m_size < other.size(); ++m_size )
+                    m_storage[m_size] = other[m_size];
+
+                return *this;
+            }
+
+            /// Atribui os elementos de uma lista inicializadora ao vetor.
+            vector& operator=( const std::initializer_list<value_type> &ilist )
+            {
+                clear();
+                if (ilist.size() > m_capacity)
+                    reserve(ilist.size());
+
+                auto ilptr = ilist.begin();
+                for ( m_size = 0; m_size < ilist.size(); ++m_size )
+                    m_storage[m_size] = *ilptr++;
+
+                return *this;
+            }
+
             //======================================================================
             //== Capacidade.
             //----------------------------------------------------------------------
@@ -135,32 +153,34 @@ namespace sc {
             void clear(){ m_size = 0;}
 
             /// Adiciona o `value` ao início(index 0) do vetor.
-            void push_front( const_reference value )
-            {
-                reserve(++m_size);
+            void push_front(const_reference value){
+                if(m_size >= m_capacity)
+                    reserve(m_capacity*2);
                 
                 //Trocando ordem dos elementos para deixar a posição do index zero vazia
                 for(size_type i=m_size-1; i>0; i--)
                     m_storage[i] = m_storage[i-1];
     
                 m_storage[0] = value;
-    
+                ++m_size;
             }
 
             /// Adiciona o `value` ao início(index 0) do vetor.
-            void push_back( const_reference value ){
-                reserve(++m_size);
+            void push_back(const_reference value){
+                if(m_size >= m_capacity)
+                    reserve(m_capacity*2);
 
                 m_storage[m_size-1] = value;
+                ++m_size;
             }
 
             /// Remove o elemento do fim do vetor
             void pop_back(){ m_size --; }
+        
 
             /// Remove o elemento da posição inicial(index 0) do vetor
-            void pop_front()
-            {
-                m_size --;
+            void pop_front(){
+                m_size--;
 
                 for(size_type i=0; i<m_size; i++)
                     m_storage[i] = m_storage[i+1];
@@ -172,6 +192,7 @@ namespace sc {
                 reserve(++m_size);
                 if(pos == cbegin())
                     throw std::out_of_range("Tentativa de escrita fora do vetor...");
+
                 
                 for(size_type i=m_size; i>(pos-1); i--)
                     m_storage[i] = m_storage[i-1];
@@ -191,11 +212,9 @@ namespace sc {
             }
 
             /// Aumenta a capacidade do vetor
-            void reserve( size_type new_cap )
-            {
-                if(new_cap > capacity())
-                {
-                    pointer new_array = new value_type[new_cap*2];
+            void reserve(size_type new_cap){
+                if(new_cap > capacity()){
+                    pointer new_array = new value_type[new_cap];
 
                     for(size_type i=0; i<m_size; i++)
                         new_array[i]=m_storage[i];
@@ -203,7 +222,7 @@ namespace sc {
 
                     delete[] m_storage;
                     m_storage = new_array;
-                    m_capacity = new_cap*2;
+                    m_capacity = new_cap;
                 }
             }
 
@@ -213,7 +232,8 @@ namespace sc {
             /// Substitui o `value` a quantidade de vezes definida pelo `count`
             void assign( size_type count, const_reference value )
             {
-                reserve(count);
+                if(count > m_capacity)
+                    reserve(count);
 
                 m_size = count;
                 
@@ -337,6 +357,30 @@ namespace sc {
 
             /// Retorna um objeto para o primeiro elemento do vetor
             const_reference data( void ) const { return begin();}
+
+
+            //======================================================================
+            //== Funções friend.
+            //----------------------------------------------------------------------
+
+            friend std::ostream& operator<<( std::ostream& os, const vector<T>& v)
+            {
+                os << "[";
+                for (size_type i = 0; i < v.size(); ++i)
+                {
+                    os << " " << v[i];
+                }
+                os << " ]";
+                return os;
+            }
+
+            friend void swap( vector& v1, vector& v2 )
+            {
+                vector<value_type> other(v1);
+
+                v1 = v2;
+                v2 = other;
+            }
     };
 }
 

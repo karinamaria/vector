@@ -13,7 +13,7 @@
 using namespace sc;
 
 int main(){
-	vector<int> a{1,2,4};
+	/**vector<int> a{1,2,4};
 	try{
        std::cout << a[0] << std::endl;
     } 
@@ -42,7 +42,20 @@ int main(){
 	for(size_t i=0; i<b.size(); i++){
 		std::cout << b.at(i) << " ";
 	}
-	std::cout << std::endl;
+	std::cout << std::endl;**/
 
+	vector<int> vec { 0, 1, 2, 4, 5, 6 };
+
+	for(size_t i=0; i<vec.size(); i++){
+		std::cout << vec.at(i) << " ";
+	}
+	std::cout << "------------" << std::endl;
+
+    // Insert at front
+    vec.insert( vec.end(), 3 );
+
+    for(size_t i=0; i<vec.size(); i++){
+		std::cout << vec.at(i) << " ";
+	}
 	return 0;
 }
