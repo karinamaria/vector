@@ -220,6 +220,11 @@ namespace sc {
                 if(index > size()){
                     return pos;
                 }
+
+                auto sizeFirstLast = size_type(last - first);
+                
+                if(sizeFirstLast > size())
+                    reserve(sizeFirstLast+size());
          
                 while(last != first ){
                     pos = insert(pos, *(last-1));
@@ -229,8 +234,32 @@ namespace sc {
                 return pos;
             }
 
-            iterator insert( const_iterator pos, const std::initializer_list<value_type>& ilist )
+            iterator insert( iterator pos, const std::initializer_list<value_type>& ilist )
             {
+                auto index = size_type(pos-begin());
+                
+                if(index > size()){
+                    return pos;
+                }
+                size_type ilist_size = ilist.size();
+
+                reserve( ilist_size+size() );
+
+                auto first = ilist.begin();
+                
+                auto f = begin()+index;
+                auto l = end()-1;
+                for(auto i=l; i!=f; i--){
+                    *(i+ilist_size) = *(i);
+                }
+
+                for(size_type i=index; i<=ilist_size+1; i++){
+                    m_storage[i] = *(first);
+                    ++first;
+                }
+
+                m_size = ilist_size+size();
+
                 return pos;
             }
 

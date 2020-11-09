@@ -49,12 +49,6 @@ int main(){
     sc::vector<int> source { 6, 7, 8, 9, 10 };
 
     vec1.insert( vec1.begin(), source.begin(), source.end() );
-    vec1 = vec2;
-    vec1.insert( std::next( vec1.begin(), 2 ), source.begin(), source.end() );
-    vec1 = vec2;
-    vec1.insert( vec1.end(), source.begin(), source.end() );
-    vec1 = vec2;
-     vec1.insert( std::next( vec1.end(), 2 ) , source.begin(), source.end() );
     std::cout << "[ ";
     for(size_t i=0; i<vec1.size(); i++){
 		std::cout << vec1.at(i) << " ";
