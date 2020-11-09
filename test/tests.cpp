@@ -442,7 +442,7 @@ TEST(IntVector, OperatorDifferent)
     ASSERT_NE( vec,vec4 );
 }
 
-TEST(IntVector, DISABLED_InsertSingleValueAtPosition)
+TEST(IntVector, InsertSingleValueAtPosition)
 {
     // #1 From an empty vector.
     sc::vector<int> vec { 1, 2, 4, 5, 6 };

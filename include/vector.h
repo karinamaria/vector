@@ -158,7 +158,7 @@ namespace sc {
                     reserve(m_capacity*2);
                 
                 //Trocando ordem dos elementos para deixar a posição do index zero vazia
-                for(size_type i=m_size-1; i>0; i--)
+                for(size_type i=m_size; i>0; i--)
                     m_storage[i] = m_storage[i-1];
     
                 m_storage[0] = value;
@@ -170,7 +170,7 @@ namespace sc {
                 if(m_size >= m_capacity)
                     reserve(m_capacity*2);
 
-                m_storage[m_size-1] = value;
+                m_storage[m_size] = value;
                 ++m_size;
             }
 
@@ -203,7 +203,7 @@ namespace sc {
     
                 ++m_size;
                 *p=value;
-                
+
                 return p;
             }
 
