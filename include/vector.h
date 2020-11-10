@@ -455,6 +455,7 @@ namespace sc {
             //== Funções friend.
             //----------------------------------------------------------------------
 
+            /// Imprime o vetor
             friend std::ostream& operator<<( std::ostream& os, const vector<T>& v)
             {
                 os << "[";
@@ -466,6 +467,7 @@ namespace sc {
                 return os;
             }
 
+            /// Troca o conteúdo de um vetor com outro vetor do mesmo tipo
             friend void swap( vector& v1, vector& v2 )
             {
                 vector<value_type> other(v1);
