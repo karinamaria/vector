@@ -1,5 +1,6 @@
 # Introdução
-
+O objetivo desse projeto é implementar o `vetor` da biblioteca stl do c++.
+Vetores são contêiners sequenciais, que permite que os elementos poddem ser acessados e percorridos por iteradores.
 
 # Compilação
 
@@ -18,6 +19,7 @@ Os executáveis estarão no diretório `build`
 ```
 $ ./build/driver_search
 ```
+Os testes foram feitos usando o [Google tests](https://github.com/google/googletest/blob/master/googletest/docs/primer.md), faça o download na máquina de execução.
 
 ```
 $ ./build/run_tests
