@@ -257,32 +257,23 @@ namespace sc {
                 return pos;
             }
 
+            /// Insere os elementos de `ilist` antes de `pos`
             iterator insert( iterator pos, const std::initializer_list<value_type>& ilist )
             {
                 auto index = size_type(pos-begin());
                 
-                if(index > size()){
+                if(index > size())
                     return pos;
-                }
-                size_type ilist_size = ilist.size();
 
-                reserve( ilist_size+size() );
+                size_type dist = m_size;
 
-                auto first = ilist.begin();
-                
-                auto f = begin()+index;
-                auto l = end()-1;
-                for(auto i=l; i!=f; i--){
-                    *(i+ilist_size) = *(i);
-                }
+                reserve(m_size+ilist.size());
+                m_size += ilist.size();
 
-                for(size_type i=index; i<=ilist_size+1; i++){
-                    m_storage[i] = *(first);
-                    ++first;
-                }
+                pos = begin()+index;
 
-                m_size = ilist_size+size();
-
+                std::copy( pos, pos+(dist-index), pos+dist );
+                std::copy( ilist.begin(), ilist.end(), pos );
                 return pos;
             }
 

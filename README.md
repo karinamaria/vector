@@ -16,10 +16,7 @@ Os executáveis estarão no diretório `build`
 
 # Execução
 
-```
-$ ./build/driver_search
-```
-Os testes foram feitos usando o [Google tests](https://github.com/google/googletest/blob/master/googletest/docs/primer.md), faça o download na máquina de execução.
+Os testes foram feitos usando o [Google tests](https://github.com/google/googletest/blob/master/googletest/docs/primer.md), faça o download na máquina de execução. E execute:
 
 ```
 $ ./build/run_tests
