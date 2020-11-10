@@ -455,7 +455,7 @@ namespace sc {
             //== Funções friend.
             //----------------------------------------------------------------------
 
-            /// Imprime o vetor
+            /// Retorna fluxo com a representação do vetor em caracteres
             friend std::ostream& operator<<( std::ostream& os, const vector<T>& v)
             {
                 os << "[";
